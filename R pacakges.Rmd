@@ -1,0 +1,67 @@
+---
+title: "R packages"
+date: "2024-09-08"
+output:
+  pdf_document: default
+  html_document: default
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## R Markdown
+
+```{r cars}
+summary(cars)
+```
+
+```{r pressure, echo=FALSE}
+plot(pressure)
+```
+
+## This R environment comes with many helpful analytics packages installed.
+
+```{r}
+library(tidyverse) # metapackage of all tidyverse packages
+```
+
+```{r}
+install.packages("ggplot2")
+library("ggplot2")
+```
+
+```{r}
+data <- data.frame(
+  LOCATION = c("Nc", "MI", "DC", "MN", "NC", "MI", "DC", "MN", "NC"),
+  TIME = c(1950, 1950, 1950, 1951, 1951, 1951, 1952, 1952, 1952),
+  Value = c(7.737607, 8.857827, 1.117701, 7.857343, 8.975379, 1.117735, 8.003917, 9.103601, 1.116546),
+  Percentage = c(773760700, 885782700, 111770100, 785734300, 897537900, 111773500, 800391700, 910360100, 111654600)
+)
+
+ggplot(data, aes(x = as.factor(TIME), y = Percentage, fill = LOCATION)) +
+  geom_bar(stat = "identity", position = "dodge") +
+  labs(x = "Time", y = "Percentage the value", title = "Percentage by Location and Time") +
+  scale_y_continuous(labels = scales::comma) + # Para formatar os números no eixo Y
+  theme_minimal()
+
+```
+
+```{r}
+library(ggplot2)
+data_1955 <- data.frame(
+  LOCATION = c("NC", "MI", "MN", "DC"),
+  Percentage = c(114132700, 115317900, 781628200, 881843700)
+)
+
+data_1955$label <- paste0(data_1955$LOCATION, ": ", round(data_1955$Percentage/sum(data_1955$Percentage) * 100, 2), "%")
+
+ggplot(data_1955, aes(x = "", y = Percentage, fill = LOCATION)) +
+  geom_bar(width = 1, stat = "identity") +
+  coord_polar("y", start = 0) +
+  geom_text(aes(label = label), position = position_stack(vjust = 0.5)) +
+  labs(title = "Percentage of Elderly Population in 1955 by Location") +
+  theme_void()
+```
+
+
